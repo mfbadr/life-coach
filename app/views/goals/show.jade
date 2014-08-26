@@ -4,10 +4,33 @@ block content
   .panel.panel-default
     .panel-body
       .row
-        h2 Due
-        h3= goal.due
-        h2 Tags
-        h3= goal.tags
+        .col-xs-12.col-sm-6
+          h2 Due
+          h3= goal.due
+          h2 Tags
+          h3= goal.tags
+          h2 Tasks
+          each task in goal.tasks
+            h4= task.name
+              h6= task.description
+        .col-xs-12.col-sm-6
+          form(role='form', method='post', action='/goals/#{goal._id}/tasks')
+            .form-group
+              label(for='name') Name
+              input.form-control#name(type='text', name='name', autofocus='true')
+            .form-group
+              label(for='description') Description
+              textarea.form-control#description(name='description')
+            .form-group
+              label(for='difficulty') Difficult
+              select.form-control#difficulty(name='difficulty')
+                option Easy
+                option Medium
+                option Hard
+            .form-group
+              label(for='rank') Rank
+              input.form-control#rank(type='number', name='rank')
+            button.btn.btn-primary(type='submit') Submit
 
 block scripts
   script(src='/js/user/home.js')

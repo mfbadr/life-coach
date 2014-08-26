@@ -55,5 +55,20 @@ describe('Goal', function(){
       });
     });
   });
+  describe('#addTask', function(){
+    it('shold add a task to a goal', function(done){
+      var task = {name:'go to school', difficulty:'hard', discription:'enroll and make As', rank:'1'},
+          id = 'a00000000000000000000001';
+      Goal.findById(id, function(goal){
+        goal.addTask(task, function(){
+          Goal.findById(id, function(goal){
+            console.log(goal);
+            expect(goal.tasks).to.have.length(1);
+            done();
+          });
+        });
+      });
+    });
+  });
 });
 

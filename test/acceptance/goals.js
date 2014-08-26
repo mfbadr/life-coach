@@ -76,21 +76,35 @@ describe('goals', function(){
     });
   });
   describe('get /goals/3', function(){
-    it('should show a specific goal page', function(){
+    it('should show a specific goal page', function(done){
       request(app)
       .get('/goals/a00000000000000000000001')
       .set('cookie', cookie)
       .end(function(err, res){
         expect(res.status).to.equal(200);
         expect(res.text).to.include('doctor');
+        done();
       });
     });
-    it('should not show goal if from a different user', function(){
+    it('should not show goal if from a different user', function(done){
       request(app)
       .get('/goals/a00000000000000000000003')
       .set('cookie', cookie)
       .end(function(err, res){
         expect(res.status).to.equal(302);
+        done();
+      });
+    });
+  });
+  describe('post /goals/3/tasks', function(){
+    it('should create a task for a specific goal', function(done){
+      request(app)
+      .post('/goals/a00000000000000000000003/tasks')
+      .send('name=think+of+a+plot&description=It+needs+action+and+romance%21&difficulty=Medium&rank=2')
+      .set('cookie', cookie)
+      .end(function(err, res){
+        expect(res.status).to.equal(302);
+        done();
       });
     });
   });

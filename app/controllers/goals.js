@@ -27,3 +27,11 @@ exports.show = function(req, res){
     }
   });
 };
+
+exports.addTask = function(req, res){
+  Goal.findById(req.params.id, function(goal){
+    goal.addTask(req.body, function(){
+      res.redirect('/goals/' + req.params.id);
+    });
+  });
+};
