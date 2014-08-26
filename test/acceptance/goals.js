@@ -6,15 +6,25 @@ process.env.DB = 'life-coach-test';
 var expect  = require('chai').expect,
     cp      = require('child_process'),
     request = require('supertest'),
+    cookie  = null,
     app     = require('../../app/index');
 
 describe('goals', function(){
   before(function(done){
+    //make sure server is running
     request(app).get('/').end(done);
   });
   beforeEach(function(done){
+    //import users
     cp.execFile(__dirname + '/../scripts/clean-db.sh', process.env.DB, {cwd:__dirname + '/../scripts'}, function(err, stdout, stderr){
-      done();
+      request(app)
+      .post('/login')
+      .send('email=bob@email.com')
+      .send('password=a')
+      .end(function(err, res){
+        cookie = res.headers['set-cookie'][0]; //get cookie and save it off
+        done();
+      });
     });
   });
   describe('get /', function(done){
@@ -32,11 +42,24 @@ describe('goals', function(){
     it('should fetch the new goal page', function(done){
       request(app)
       .get('/goals/new')
+      .set('cookie', cookie)
       .end(function(err, res){
         expect(res.status).to.equal(200);
         expect(res.text).to.include('Name');
         expect(res.text).to.include('Due');
         expect(res.text).to.include('Tags');
+        done();
+      });
+    });
+  });
+  describe('post /goals', function(){
+    it('should redirect to /goals', function(){
+      request(app)
+      .post('/goals')
+      .set('cookie', cookie)
+      .send('name=be+a+doctor&due=2014-08-28&tags=a%2Cb%2Cc%2Cd') //copy from browser
+      .end(function(err, res){
+        expect(res.status).to.equal(302);
       });
     });
   });

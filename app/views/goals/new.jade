@@ -1,0 +1,22 @@
+extends ../shared/template
+block content
+  h2 New Goal
+  .panel.panel-default
+    .panel-body
+      .row
+        form(role='form', method='post', action='/goals')
+          .col-xs-12.col-sm-6
+            .form-group
+              label(for='name') Name
+              input#name.form-control(type='text', placeholder='Write a novel', name='name')
+            .form-group
+              label(for='due') Due Date
+              input#due.form-control(type='date', name='due')
+            .form-group
+              label(for='tags') Tags
+              input#tags.form-control(type='text', placeholder='Book, writing, self', name='tags')
+            button.btn.btn-success.btn-lg(type='submit') Submit
+
+block scripts
+  script(src='/js/user/home.js')
+
