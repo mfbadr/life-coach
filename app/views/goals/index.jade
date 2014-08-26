@@ -1,0 +1,21 @@
+extends ../shared/template
+block content
+  h2 New Goal
+  .panel.panel-default
+    .panel-body
+      .row
+        table.table.table-striped.table-hover
+          thead
+            th Name
+            th Due
+            th Tags
+          tbody
+            each goal in goals
+              tr
+                td: a(href='/goals/#{goal._id}')= goal.name
+                td= goal.due
+                td= goal.tags
+
+block scripts
+  script(src='/js/user/home.js')
+

@@ -11,3 +11,19 @@ exports.create = function(req, res){
     res.redirect('/goals');
   });
 };
+
+exports.index = function(req,res){
+  Goal.findAllByUserId(res.locals.user._id, function(err, goals){
+    res.render('goals/index', {goals:goals});
+  });
+};
+
+exports.show = function(req, res){
+  Goal.findById(req.params.id, function(goal){
+    if(goal.userId.toString() === res.locals.user._id.toString()){
+      res.render('goals/show', {goal:goal});
+    }else{
+      res.redirect('/goals');
+    }
+  });
+};

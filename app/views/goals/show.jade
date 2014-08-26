@@ -1,0 +1,14 @@
+extends ../shared/template
+block content
+  h2= goal.name
+  .panel.panel-default
+    .panel-body
+      .row
+        h2 Due
+        h3= goal.due
+        h2 Tags
+        h3= goal.tags
+
+block scripts
+  script(src='/js/user/home.js')
+
